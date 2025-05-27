@@ -23,7 +23,7 @@ Files used:
 
 You can run in two ways:
 1. Locally in PySpark environment. Run below spark submit command.
-Files are already placed in resources folder, and output will be generated in output/avg_ratings folder as csv part file
+Files are already placed in resources folder.
 
 ```bash
 spark-submit job_run.py
@@ -31,7 +31,6 @@ spark-submit job_run.py
 
 2. You can also run the python notebook movielens_code_solution.ipynb.
 If you are running the notebook, Ensure the input `.dat` files are placed in a folder and replace the "path" variable's value with your path in the first cell.
-The output will be saved as csv file at your_path/output/avg_ratings
 
 
 ## 📦 Output
@@ -40,3 +39,21 @@ The final result is saved in CSV format with columns:
 - `Year`
 - `Genre`
 - `AvgRating`
+
+After running the job, you will find the results saved in two different folders inside the `output/` directory:
+
+1. **`output/avg_ratings/`**
+   - Contains a single CSV file (e.g., `part-00000-...csv`) with all the results combined.
+   - Useful for quick reading, testing, or exporting to tools like Excel or BI dashboards.
+   - File is written using `.coalesce(1)` to ensure only one output file is generated.
+
+2. **`output/avg_ratings_partitioned/`**
+   - Contains partitioned CSV files, organized into subfolders based on `Year` and `Genre`.
+   - Example subfolder structure:
+     ```
+     Year=1995/Genre=Action/part-00000.csv
+     Year=1995/Genre=Comedy/part-00001.csv
+     ```
+   - Each folder represents a unique combination of `Year` and `Genre`.
+   - This structure improves scalability and query performance when working with large datasets.
+
